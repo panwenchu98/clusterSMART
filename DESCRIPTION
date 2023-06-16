@@ -1,0 +1,14 @@
+Package: clusterSMART
+Type: Package
+Title: This package provides functions to analyze prototypical clustered SMART
+Version: 0.1.0
+Date: 2023-06-16
+Author: Wenchu Pan
+Maintainer: Wenchu Pan <wenchu@umich.edu>
+Description: This package has functions to adjust original parameters to fixed effect sizes, and generate prototypical clustered SMART data acccordingly.    ALso, this package has functions to analyze the prototypical clustered SMART data and do generalized hypothesis testing on the result.
+    Use four spaces when indenting paragraphs within the Description.
+Imports: stats
+License: GPL-3
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 7.2.3

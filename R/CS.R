@@ -6,7 +6,7 @@
 #'@param rho The correlation parameter
 #'@param n The size of the matrix
 #'
-#'@return An n*n matrix with diagonal term 1 and off-diagonal term rho
+#'@return A n*n matrix with diagonal term 1 and off-diagonal term rho
 #'
 #'@examples
 #'library(clusterSMART)

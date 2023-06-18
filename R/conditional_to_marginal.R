@@ -4,7 +4,7 @@
 #'This is a function for changing the conditional (treatment-pathway level) parameters to marginal (Adaptive-Intervention level) parameters in a prototypical SMART.
 #'The parameter is defined without considering the baseline covariates
 #'
-#'@param p1,p2 The response rate of the first-stage treatment in each randomization branch
+#'@param p1,p2 The response rate of the first-stage treatment given the first randomization
 #'@param conditional_paras A matrix with 6 rows, the first two entries of each row represent the expected mean and variance of each treatment pathway
 #'
 #'@return A 4*2 matrix, each row contains the marginal expected mean and variance of each Adaptive Intervention

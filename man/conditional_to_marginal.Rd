@@ -7,7 +7,7 @@
 conditional_to_marginal(p1, p2, conditional_paras)
 }
 \arguments{
-\item{p1, p2}{The response rate of the first-stage treatment in each randomization branch}
+\item{p1, p2}{The response rate of the first-stage treatment given the first randomization}
 
 \item{conditional_paras}{A matrix with 6 rows, the first two entries of each row represent the expected mean and variance of each treatment pathway}
 }

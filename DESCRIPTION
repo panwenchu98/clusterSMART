@@ -1,6 +1,6 @@
 Package: clusterSMART
 Type: Package
-Title: This package provides functions to analyze prototypical clustered SMART
+Title: Functions to analyze prototypical clustered SMART
 Version: 0.1.0
 Date: 2023-06-16
 Author: Wenchu Pan <wenchu@umich.edu>

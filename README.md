@@ -2,12 +2,12 @@
 
 
 ## Overview  
-*This package includes a series of functions, listed below are the main functioning ones:
-    * parameter_adjust helps to adjust initial parameters to achieve certain effect size (signal-to-noise ratio) of main effect and covaraite effect.
-    * generate_SMART generates clustered SMART data based on given parameters for simulation testing.
-    * solve_SMART does all analysis for clustered SMART data, including effect estimate, working variance model estimate, as well as variance estimator.
-    * hypothesis_testing does more generalized hypothesis testing using solve_SMART output.
-    * data_expand duplicates data to make it capable of being analysed in off-the-shelf geepack.
+*This package includes a series of functions, listed below are the main functioning ones: 
+   * parameter_adjust helps to adjust initial parameters to achieve certain effect size (signal-to-noise ratio) of main effect and covaraite effect.
+   * generate_SMART generates clustered SMART data based on given parameters for simulation testing.
+   * solve_SMART does all analysis for clustered SMART data, including effect estimate, working variance model estimate, as well as variance estimator.
+   * hypothesis_testing does more generalized hypothesis testing using solve_SMART output.
+   * data_expand duplicates data to make it capable of being analysed in off-the-shelf geepack.
 ----
 
 ## installation  

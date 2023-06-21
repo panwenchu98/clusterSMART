@@ -114,4 +114,4 @@ hypothesis_testing(res,aimed_test=matrix(c(1,-1,0,0,1,0,-5,1,0,0,0,0,-1,1),2,7,b
 ##2      (Intercept) - X2 + 1 3.3220586 0.1909499  2.94688444 3.6972327  17.397540 0.003361658
 ```
 
-#For further analysis and comparison with geepack, see attached vignettes.
+For further analysis and comparison with geepack, see attached vignettes.

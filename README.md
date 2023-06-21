@@ -1,6 +1,6 @@
 # clusterSMART
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/panwenchu98/clusterSMART/actions/workflows/check-release.yaml/badge.svg)](https://github.com/panwenchu98/clusterSMART/actions/workflows/check-release.yaml)
+[![R-CMD-check](https://github.com/panwenchu98/clusterSMART/actions/workflows/check-release.yaml/badge.svg?branch=main)](https://github.com/panwenchu98/clusterSMART/actions/workflows/check-release.yaml)
 <!-- badges: end -->
 
 ## Overview  

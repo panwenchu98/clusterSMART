@@ -87,7 +87,7 @@ paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=
                        effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
 ```
 
-#Example 1: Using independence working varaince model
+Example 1: Using independence working varaince model
 ```{r}
 temp=generate_SMART(conditional_paras=paras$conditional_paras,
                     eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
@@ -96,13 +96,15 @@ res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data
                aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
                variance_structure=0,correlation_structure=0,ICC_lower_thresh=0,
                max_iter=10,convergence_thresh=1e-5,alpha=0.05,
-               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=2)
+```
+```{r}
 expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=FALSE)
 model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="independence")
 summary(model1)
 ```
 
-#Example 2: Using exchangeable working variance model under equal cluster size
+Example 2: Using exchangeable working variance model under equal cluster size
 ```{r}
 temp=generate_SMART(conditional_paras=paras$conditional_paras,
                     eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
@@ -111,13 +113,15 @@ res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data
                aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
                variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
                max_iter=10,convergence_thresh=1e-5,alpha=0.05,
-               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=2)
+```
+```{r}
 expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=FALSE)
 model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="userdefined",zcor=expanded$structure)
 summary(model1)
 ```
 
-#Example 3: Using exchangeable working variance model under unequal cluster size
+Example 3: Using exchangeable working variance model under unequal cluster size
 ```{r}
 temp=generate_SMART(conditional_paras=paras$conditional_paras,
                     eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
@@ -126,7 +130,9 @@ res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data
                aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
                variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
                max_iter=10,convergence_thresh=1e-5,alpha=0.05,
-               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=2)
+```
+```{r}
 expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=TRUE)
 model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="exchangeable")
 summary(model1)

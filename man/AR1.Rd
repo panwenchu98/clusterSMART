@@ -7,15 +7,15 @@
 AR1(rho, n)
 }
 \arguments{
-\item{rho}{The correlation parameter}
+\item{rho}{The correlation parameter.}
 
-\item{n}{The size of the matrix}
+\item{n}{The size of the matrix.}
 }
 \value{
-A n*n matrix with the (i,j) term having value rho^abs(i-j)
+A n*n matrix with the (i,j) term having value rho^abs(i-j).
 }
 \description{
-This is a function for generating the autocorrelated matrix
+This is a function for generating the autocorrelated matrix.
 }
 \examples{
 library(clusterSMART)

@@ -2,20 +2,20 @@
 #'
 #'@description
 #'This is a function for generating clustered SMART data based on given conditional (treatment-pathway level) mean, variance and intra-cluster correlation, as well as possible coefficient and variance of mean-zero normal baseline covariates.\cr
-#'Default parameters gives a set of data with 100 clusters, each of same size 10, and the effect size of comparing AI(1,1) to AI(-1,-1) is 0.5, and has no baseline covaraites
+#'Default parameters gives a set of data with 100 clusters, each of same size 10, and the effect size of comparing AI(1,1) to AI(-1,-1) is 0.5, and has no baseline covaraites.
 #'
 #'@param conditional_paras A 6*3 matrix, each row contains the conditional (treatment-pathway level) parameters of mean, variance and intra-cluster correlation.
-#'@param eta_x NULL, or a number or numeric vector of coefficients of baseline covariates
-#'@param sigma2_x NULL, or a positive number of numeric vector of the variance of baseline covariates
-#'@param detail_x NULL, or a number or vector with value in {0,1}, specifying each baseline covariate being cluster-level(0) or individual_level(1), default is cluster level
-#'@param p1,p2 The response rate of the first-stage treatment given the first randomization
-#'@param N Number of clusters
-#'@param Mmax,Mmin The largest and smallest size of each cluster
-#'@param seed The random seed
+#'@param eta_x NULL, or a number or numeric vector of coefficients of baseline covariates.
+#'@param sigma2_x NULL, or a positive number of numeric vector of the variance of baseline covariates.
+#'@param detail_x NULL, or a number or vector with value in {0,1}, specifying each baseline covariate being cluster-level(0) or individual_level(1), default is cluster level.
+#'@param p1,p2 The response rate of the first-stage treatment given the first randomization.
+#'@param N Number of clusters.
+#'@param Mmax,Mmin The largest and smallest size of each cluster.
+#'@param seed The random seed.
 #'
 #'
 #'@return A list of generated clustered SMART data containing:\tabular{ll}{
-#'  \code{data}\tab A list of the data, each row represents an individual
+#'  \code{data}\tab A list of the data, each row represents an individual.
 #'  \itemize{
 #'    \item{Y}{ - The final outcome}
 #'    \item{id}{ - The cluster id that individual belongs to}
@@ -27,19 +27,26 @@
 #'  }
 #'  \cr
 #'  \tab \cr
-#'  \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention\cr
+#'  \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention.\cr
 #'  \tab \cr
-#'  \code{beta}\tab The coefficients of \eqn{\beta_0,\beta_1,\beta_2,\beta_3} and the baseline covaraites\cr
+#'  \code{beta}\tab The coefficients of \eqn{\beta_0,\beta_1,\beta_2,\beta_3} and the baseline covaraites.\cr
 #'  }
 #'
 #'@examples
 #'library(clusterSMART)
-#'conditional_paras_original=matrix(c(6,8,4,4,4,4,100,81,64,49,36,36,0.20,0.18,0.16,0.14,0.12,0.10),6,3)
+#'conditional_paras_original=matrix(c(6,8,4,4,4,4,
+#'                                    100,81,64,49,36,36,
+#'                                    0.20,0.18,0.16,0.14,0.12,0.10),6,3)
 #'p1=0.25; p2=0.55
 #'effectsize_dtr=0.5; rhoadjust=1
 #'effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
-#'paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
-#'temp=generate_SMART(conditional_paras=paras$conditional_paras,eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),p1=0.25,p2=0.55,N=500,Mmax=10,Mmin=1,seed=1234)
+#'paras=parameter_adjust(conditional_paras_original=conditional_paras_original,
+#'                       p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+#'                       effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,
+#'                       rhoadjust=rhoadjust,sigma2_x=sigma2_x)
+#'temp=generate_SMART(conditional_paras=paras$conditional_paras,
+#'                    eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+#'                    p1=0.25,p2=0.55,N=500,Mmax=10,Mmin=1,seed=1234)
 #'
 #'@importFrom stats rbinom
 #'@importFrom stats rnorm
@@ -60,6 +67,8 @@
 generate_SMART=function(conditional_paras=matrix(c(6,8,4,4,4,4,75.4461,61.1113,48.2855,36.9686,27.1606,27.1606,0.20,0.18,0.16,0.14,0.12,0.10),6,3),
                         eta_x=NULL,sigma2_x=NULL,detail_x=NULL,
                         p1=0.25,p2=0.55,N=100,Mmax=10,Mmin=10,seed=1234){
+  if (Mmax<Mmin) stop("The maximum cluster size should not be smaller than the minimum")
+
   coeff=matrix(c(1,1,1,1,1,1,-1,-1,1,-1,1,-1,1,-1,-1,1),4,4)
 
   marginal_paras=conditional_to_marginal(p1,p2,conditional_paras)

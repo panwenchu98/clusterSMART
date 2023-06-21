@@ -2,7 +2,7 @@
 % Please edit documentation in R/parameter_adjust.R
 \name{parameter_adjust}
 \alias{parameter_adjust}
-\title{Adjust parameters to satisfy certain requirements}
+\title{Adjust Parameters to Satisfy Requirements}
 \usage{
 parameter_adjust(
   conditional_paras_original,
@@ -18,27 +18,27 @@ parameter_adjust(
 \arguments{
 \item{conditional_paras_original}{A 6*3 matrix, each row contains of the given initial conditional (treatment-pathway level) parameters of mean, variance and intra-cluster correlation.}
 
-\item{p1, p2}{The response rate of the first-stage treatment given the first randomization}
+\item{p1, p2}{The response rate of the first-stage treatment given the first randomization.}
 
-\item{aimed_comparison}{A length 4 vector containing two 0s and two 1s, representing which two Adaptive Interventions we want to fix the effect size (default is c(1,0,0,1) which represents comparing AI(1,1) vs AI(-1,-1))}
+\item{aimed_comparison}{A length 4 vector containing two 0s and two 1s, representing which two Adaptive Interventions we want to fix the effect size (default is c(1,0,0,1) which represents comparing AI(1,1) vs AI(-1,-1)).}
 
-\item{effectsize_dtr}{The desired effect size of the aimed comparison}
+\item{effectsize_dtr}{The desired effect size of the aimed comparison.}
 
-\item{effectsize_eta}{The desired effect size of each baseline covariates (can be NULL, value or vectors in [0,1]) (default is NULL)}
+\item{effectsize_eta}{The desired effect size of each baseline covariates (can be NULL, value or vectors in [0,1]) (default is NULL).}
 
-\item{rhoadjust}{The scale modification parameter that is multiplied onto the baseline correlation}
+\item{rhoadjust}{The scale modification parameter that is multiplied onto the baseline correlation.}
 
-\item{sigma2_x}{The variance of desired covaraites. (can be NULL, positive value or vectors of the same length as effectsize_eta) (default is NULL)}
+\item{sigma2_x}{The variance of desired covaraites. (can be NULL, positive value or vectors of the same length as effectsize_eta) (default is NULL).}
 }
 \value{
 A list of adjusted paramters containing:\tabular{ll}{
- \code{beta_margin}\tab A 4*1 numeric vector of the parameters \eqn{\beta_0,\beta_1,\beta_2,\beta_3}\cr
+ \code{beta_margin}\tab A 4*1 numeric vector of the parameters \eqn{\beta_0,\beta_1,\beta_2,\beta_3}.\cr
  \tab \cr
- \code{conditional_paras}\tab A 6*3 numeric matrix of the mean, variance and ICC of each treatment trajectory \cr
+ \code{conditional_paras}\tab A 6*3 numeric matrix of the mean, variance and ICC of each treatment trajectory. \cr
  \tab \cr
- \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention\cr
+ \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention.\cr
  \tab \cr
- \code{eta}\tab NULL, or a value or a numeric vector of the coefficients of each baseline covariate\cr
+ \code{eta}\tab NULL, or a value or a numeric vector of the coefficients of each baseline covariate.\cr
  }
 }
 \description{
@@ -46,10 +46,15 @@ This is a function for changing the given initial conditional (treatment-pathway
 }
 \examples{
 library(clusterSMART)
-conditional_paras_original=matrix(c(6,8,4,4,4,4,100,81,64,49,36,36,0.20,0.18,0.16,0.14,0.12,0.10),6,3)
+conditional_paras_original=matrix(c(6,8,4,4,4,4,
+                                   100,81,64,49,36,36,
+                                   0.20,0.18,0.16,0.14,0.12,0.10),6,3)
 p1=0.25; p2=0.55
 effectsize_dtr=0.5; rhoadjust=1
 effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
-paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
+paras=parameter_adjust(conditional_paras_original=conditional_paras_original,
+                      p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+                      effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,
+                      rhoadjust=rhoadjust,sigma2_x=sigma2_x)
 
 }

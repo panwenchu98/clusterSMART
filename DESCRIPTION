@@ -7,7 +7,7 @@ Author: Wenchu Pan <wenchu@umich.edu>
 Maintainer: Wenchu Pan <wenchu@umich.edu>
 Description: This package has functions to adjust original parameters to fixed effect sizes, and generate prototypical clustered SMART data acccordingly.    ALso, this package has functions to analyze the prototypical clustered SMART data and do generalized hypothesis testing on the result.
     Use four spaces when indenting paragraphs within the Description.
-Imports: stats, MASS
+Imports: stats, MASS, geepack
 License: GPL-3
 Encoding: UTF-8
 LazyData: false

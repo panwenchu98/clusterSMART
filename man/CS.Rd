@@ -7,15 +7,15 @@
 CS(rho, n)
 }
 \arguments{
-\item{rho}{The correlation parameter}
+\item{rho}{The correlation parameter.}
 
-\item{n}{The size of the matrix}
+\item{n}{The size of the matrix.}
 }
 \value{
-A n*n matrix with diagonal term 1 and off-diagonal term rho
+A n*n matrix with diagonal term 1 and off-diagonal term rho.
 }
 \description{
-This is a function for generating the compound symmetry (exchangeable) matrix
+This is a function for generating the compound symmetry (exchangeable) matrix.
 }
 \examples{
 library(clusterSMART)

@@ -1,33 +1,38 @@
-#'@title Adjust parameters to satisfy certain requirements
+#'@title Adjust Parameters to Satisfy Requirements
 #'
 #'@description
 #'This is a function for changing the given initial conditional (treatment-pathway level) parameters based on the required effect size of aimed comparison and effect size of covariates.
 #'
 #'@param conditional_paras_original A 6*3 matrix, each row contains of the given initial conditional (treatment-pathway level) parameters of mean, variance and intra-cluster correlation.
-#'@param p1,p2 The response rate of the first-stage treatment given the first randomization
-#'@param aimed_comparison A length 4 vector containing two 0s and two 1s, representing which two Adaptive Interventions we want to fix the effect size (default is c(1,0,0,1) which represents comparing AI(1,1) vs AI(-1,-1))
-#'@param effectsize_dtr The desired effect size of the aimed comparison
-#'@param effectsize_eta The desired effect size of each baseline covariates (can be NULL, value or vectors in [0,1]) (default is NULL)
-#'@param rhoadjust The scale modification parameter that is multiplied onto the baseline correlation
-#'@param sigma2_x The variance of desired covaraites. (can be NULL, positive value or vectors of the same length as effectsize_eta) (default is NULL)
+#'@param p1,p2 The response rate of the first-stage treatment given the first randomization.
+#'@param aimed_comparison A length 4 vector containing two 0s and two 1s, representing which two Adaptive Interventions we want to fix the effect size (default is c(1,0,0,1) which represents comparing AI(1,1) vs AI(-1,-1)).
+#'@param effectsize_dtr The desired effect size of the aimed comparison.
+#'@param effectsize_eta The desired effect size of each baseline covariates (can be NULL, value or vectors in [0,1]) (default is NULL).
+#'@param rhoadjust The scale modification parameter that is multiplied onto the baseline correlation.
+#'@param sigma2_x The variance of desired covaraites. (can be NULL, positive value or vectors of the same length as effectsize_eta) (default is NULL).
 #'
 #'@return A list of adjusted paramters containing:\tabular{ll}{
-#'  \code{beta_margin}\tab A 4*1 numeric vector of the parameters \eqn{\beta_0,\beta_1,\beta_2,\beta_3}\cr
+#'  \code{beta_margin}\tab A 4*1 numeric vector of the parameters \eqn{\beta_0,\beta_1,\beta_2,\beta_3}.\cr
 #'  \tab \cr
-#'  \code{conditional_paras}\tab A 6*3 numeric matrix of the mean, variance and ICC of each treatment trajectory \cr
+#'  \code{conditional_paras}\tab A 6*3 numeric matrix of the mean, variance and ICC of each treatment trajectory. \cr
 #'  \tab \cr
-#'  \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention\cr
+#'  \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention.\cr
 #'  \tab \cr
-#'  \code{eta}\tab NULL, or a value or a numeric vector of the coefficients of each baseline covariate\cr
+#'  \code{eta}\tab NULL, or a value or a numeric vector of the coefficients of each baseline covariate.\cr
 #'  }
 #'
 #'@examples
 #'library(clusterSMART)
-#'conditional_paras_original=matrix(c(6,8,4,4,4,4,100,81,64,49,36,36,0.20,0.18,0.16,0.14,0.12,0.10),6,3)
-#'p1=0.25; p2=0.55
+#'conditional_paras_original=matrix(c(6,8,4,4,4,4,
+#'                                    100,81,64,49,36,36,
+#'                                    0.20,0.18,0.16,0.14,0.12,0.10),6,3)
+##'p1=0.25; p2=0.55
 #'effectsize_dtr=0.5; rhoadjust=1
 #'effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
-#'paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
+#'paras=parameter_adjust(conditional_paras_original=conditional_paras_original,
+#'                       p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+#'                       effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,
+#'                       rhoadjust=rhoadjust,sigma2_x=sigma2_x)
 #'
 #'@export
 #'

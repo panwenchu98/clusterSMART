@@ -1,12 +1,12 @@
 #'@title Autocorrelation Matrix
 #'
 #'@description
-#'This is a function for generating the autocorrelated matrix
+#'This is a function for generating the autocorrelated matrix.
 #'
-#'@param rho The correlation parameter
-#'@param n The size of the matrix
+#'@param rho The correlation parameter.
+#'@param n The size of the matrix.
 #'
-#'@return A n*n matrix with the (i,j) term having value rho^abs(i-j)
+#'@return A n*n matrix with the (i,j) term having value rho^abs(i-j).
 #'
 #'@examples
 #'library(clusterSMART)

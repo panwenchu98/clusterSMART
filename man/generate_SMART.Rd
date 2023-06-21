@@ -21,23 +21,23 @@ generate_SMART(
 \arguments{
 \item{conditional_paras}{A 6*3 matrix, each row contains the conditional (treatment-pathway level) parameters of mean, variance and intra-cluster correlation.}
 
-\item{eta_x}{NULL, or a number or numeric vector of coefficients of baseline covariates}
+\item{eta_x}{NULL, or a number or numeric vector of coefficients of baseline covariates.}
 
-\item{sigma2_x}{NULL, or a positive number of numeric vector of the variance of baseline covariates}
+\item{sigma2_x}{NULL, or a positive number of numeric vector of the variance of baseline covariates.}
 
-\item{detail_x}{NULL, or a number or vector with value in {0,1}, specifying each baseline covariate being cluster-level(0) or individual_level(1), default is cluster level}
+\item{detail_x}{NULL, or a number or vector with value in {0,1}, specifying each baseline covariate being cluster-level(0) or individual_level(1), default is cluster level.}
 
-\item{p1, p2}{The response rate of the first-stage treatment given the first randomization}
+\item{p1, p2}{The response rate of the first-stage treatment given the first randomization.}
 
-\item{N}{Number of clusters}
+\item{N}{Number of clusters.}
 
-\item{Mmax, Mmin}{The largest and smallest size of each cluster}
+\item{Mmax, Mmin}{The largest and smallest size of each cluster.}
 
-\item{seed}{The random seed}
+\item{seed}{The random seed.}
 }
 \value{
 A list of generated clustered SMART data containing:\tabular{ll}{
- \code{data}\tab A list of the data, each row represents an individual
+ \code{data}\tab A list of the data, each row represents an individual.
  \itemize{
    \item{Y}{ - The final outcome}
    \item{id}{ - The cluster id that individual belongs to}
@@ -49,22 +49,29 @@ A list of generated clustered SMART data containing:\tabular{ll}{
  }
  \cr
  \tab \cr
- \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention\cr
+ \code{marginal_paras}\tab A 4*2 numeric matrix of the marginal mean and variance of each Adaptive Intervention.\cr
  \tab \cr
- \code{beta}\tab The coefficients of \eqn{\beta_0,\beta_1,\beta_2,\beta_3} and the baseline covaraites\cr
+ \code{beta}\tab The coefficients of \eqn{\beta_0,\beta_1,\beta_2,\beta_3} and the baseline covaraites.\cr
  }
 }
 \description{
 This is a function for generating clustered SMART data based on given conditional (treatment-pathway level) mean, variance and intra-cluster correlation, as well as possible coefficient and variance of mean-zero normal baseline covariates.\cr
-Default parameters gives a set of data with 100 clusters, each of same size 10, and the effect size of comparing AI(1,1) to AI(-1,-1) is 0.5, and has no baseline covaraites
+Default parameters gives a set of data with 100 clusters, each of same size 10, and the effect size of comparing AI(1,1) to AI(-1,-1) is 0.5, and has no baseline covaraites.
 }
 \examples{
 library(clusterSMART)
-conditional_paras_original=matrix(c(6,8,4,4,4,4,100,81,64,49,36,36,0.20,0.18,0.16,0.14,0.12,0.10),6,3)
+conditional_paras_original=matrix(c(6,8,4,4,4,4,
+                                   100,81,64,49,36,36,
+                                   0.20,0.18,0.16,0.14,0.12,0.10),6,3)
 p1=0.25; p2=0.55
 effectsize_dtr=0.5; rhoadjust=1
 effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
-paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
-temp=generate_SMART(conditional_paras=paras$conditional_paras,eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),p1=0.25,p2=0.55,N=500,Mmax=10,Mmin=1,seed=1234)
+paras=parameter_adjust(conditional_paras_original=conditional_paras_original,
+                      p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+                      effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,
+                      rhoadjust=rhoadjust,sigma2_x=sigma2_x)
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                   eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+                   p1=0.25,p2=0.55,N=500,Mmax=10,Mmin=1,seed=1234)
 
 }

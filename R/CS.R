@@ -1,12 +1,12 @@
 #'@title Compound Symmetry (Exchangeable) Matrix
 #'
 #'@description
-#'This is a function for generating the compound symmetry (exchangeable) matrix
+#'This is a function for generating the compound symmetry (exchangeable) matrix.
 #'
-#'@param rho The correlation parameter
-#'@param n The size of the matrix
+#'@param rho The correlation parameter.
+#'@param n The size of the matrix.
 #'
-#'@return A n*n matrix with diagonal term 1 and off-diagonal term rho
+#'@return A n*n matrix with diagonal term 1 and off-diagonal term rho.
 #'
 #'@examples
 #'library(clusterSMART)

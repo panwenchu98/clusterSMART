@@ -1,0 +1,134 @@
+---
+title: "tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Theoretical Discription  
+    This package is used for generating and analysing data of clustered SMARTS.
+    For theoretical details, see https://pubmed.ncbi.nlm.nih.gov/28627310/
+
+### Usage
+    This package includes a series of functions, listed below are the main functioning ones:
+    1. parameter_adjust helps to adjust initial parameters to achieve certain effect size (signal-to-noise ratio) of main effect and covaraite effect.
+    2. generate_SMART generates clustered SMART data based on given parameters for simulation testing.
+    3. solve_SMART does all analysis for clustered SMART data, including effect estimate, working variance model estimate, as well as variance estimator.
+    4. hypothesis_testing does more generalized hypothesis testing using solve_SMART output.
+    5. data_expand duplicates data to make it capable of being analysed in off-the-shelf geepack.
+    
+### Import Package
+```{r setup}
+library(clusterSMART)
+```
+
+### Example 1: SMART analysis without baseline covaraites
+```{r}
+library(stats)
+library(MASS)
+library(geepack)
+
+conditional_paras_original=matrix(c(6,8,4,4,4,4,100,81,64,49,36,36,0.20,0.18,0.16,0.14,0.12,0.10),6,3)
+p1=0.25; p2=0.55
+effectsize_dtr=0.5; rhoadjust=1
+
+effectsize_eta=NULL; sigma2_x=NULL
+#Adjusting Parameters
+paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+             effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
+
+#Building SMART data
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                    p1=0.25,p2=0.55,N=50,Mmax=5,Mmin=2,seed=1234)
+#Solving SMART
+res_nox=solve_SMART(Y=temp$data$Y,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,
+                    variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
+                    max_iter=10,convergence_thresh=1e-5,alpha=0.05,
+                    estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=2)
+```
+
+### Example 2: SMART analysis with baseline covariates, and do hypothesis testing
+```{r}
+effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
+paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+             effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
+
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                    eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+                    p1=0.25,p2=0.55,N=500,Mmax=5,Mmin=2,seed=1234)
+
+res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,
+                aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
+                variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
+                max_iter=10,convergence_thresh=1e-5,alpha=0.05,
+                estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+```
+
+General hypothesis testing
+```{r}
+hypothesis_testing(res,aimed_test=matrix(c(1,-1,0,0,1,0,-5,1,0,0,0,0,-1,1),2,7,byrow=T),alpha=0.05,use_t=TRUE)
+```
+
+### Compare the result with geepack
+Under independence working correlation structure, or under exchangeable structure with equal cluster size, the result are identical
+Otherwise the result are close
+```{r}
+effectsize_eta=c(0.2,0.5); sigma2_x=c(1,2)
+paras=parameter_adjust(conditional_paras_original=conditional_paras_original,p1=p1,p2=p2,aimed_comparison=c(1,0,0,1),
+                       effectsize_dtr=effectsize_dtr,effectsize_eta=effectsize_eta,rhoadjust[rhoadjust],sigma2_x=sigma2_x)
+```
+
+#Example 1: Using independence working varaince model
+```{r}
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                    eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+                    p1=0.25,p2=0.55,N=50,Mmax=5,Mmin=2,seed=1234)
+res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,
+               aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
+               variance_structure=0,correlation_structure=0,ICC_lower_thresh=0,
+               max_iter=10,convergence_thresh=1e-5,alpha=0.05,
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=FALSE)
+model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="independence")
+summary(model1)
+```
+
+#Example 2: Using exchangeable working variance model under equal cluster size
+```{r}
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                    eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+                    p1=0.25,p2=0.55,N=50,Mmax=3,Mmin=3,seed=1234)
+res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,
+               aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
+               variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
+               max_iter=10,convergence_thresh=1e-5,alpha=0.05,
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=FALSE)
+model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="userdefined",zcor=expanded$structure)
+summary(model1)
+```
+
+#Example 3: Using exchangeable working variance model under unequal cluster size
+```{r}
+temp=generate_SMART(conditional_paras=paras$conditional_paras,
+                    eta_x=paras$eta,sigma2_x=c(1,2),detail_x=c(1,1),
+                    p1=0.25,p2=0.55,N=50,Mmax=5,Mmin=2,seed=1234)
+res=solve_SMART(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,
+               aimed_comparison=matrix(c(1,0,0,1,1,0,1,0),2,4,byrow=T),
+               variance_structure=0,correlation_structure=1,ICC_lower_thresh=0,
+               max_iter=10,convergence_thresh=1e-5,alpha=0.05,
+               estimate_weight=FALSE,dof_adjustment=FALSE,use_t=FALSE,bias_correction=FALSE,verbose=3)
+expanded=data_expand(Y=temp$data$Y,X=temp$data$X,cluster_id=temp$data$id,A1=temp$data$A1,R=temp$data$R,A2=temp$data$A2,seperate=TRUE)
+model1=geeglm(Y~A1+A2+I(A1*A2)+X1+X2,id=id,family=gaussian(),weight=W,data=expanded$data,corstr="exchangeable")
+summary(model1)
+```
+

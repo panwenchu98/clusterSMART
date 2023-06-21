@@ -13,3 +13,7 @@ Encoding: UTF-8
 LazyData: false
 RoxygenNote: 7.2.3
 URL: https://github.com/panwenchu98/clusterSMART
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
